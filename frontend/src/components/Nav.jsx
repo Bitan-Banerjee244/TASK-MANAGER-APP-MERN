@@ -2,9 +2,28 @@ import { FaSearch } from "react-icons/fa";
 import { MdAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { IoExit } from "react-icons/io5";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 function Nav() {
   let navigate = useNavigate();
+  let { BACKEND_URL } = useContext(UserContext);
+
+  const handleLogOut = async () => {
+    try {
+      let res = await axios.post(`${BACKEND_URL}/api/v2/logout`,{} ,{
+        withCredentials: true,
+      });
+      console.log(res);
+      navigate("/login");
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
 
   return (
     <>
@@ -33,7 +52,10 @@ function Nav() {
           >
             <MdAdd />
           </button>
-          <button className="md:w-8 md:h-8  w-5 h-5 flex items-center justify-center rounded-full border-2 border-red-400 text-red-400 text-xl hover:bg-red-400 hover:text-black transition duration-300">
+          <button
+            className="md:w-8 md:h-8  w-5 h-5 flex items-center justify-center rounded-full border-2 border-red-400 text-red-400 text-xl hover:bg-red-400 hover:text-black transition duration-300"
+            onClick={handleLogOut}
+          >
             <IoExit />
           </button>
         </div>
