@@ -15,13 +15,14 @@ function UpdateTask() {
     description: "",
     type: "",
     progress: "",
+    isFavourite: false,
   });
 
   const handleInput = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setupdateData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -35,6 +36,7 @@ function UpdateTask() {
         setupdateData(res.data.data);
       } catch (error) {
         console.log(error);
+        toast.error("Failed to load task data");
       }
     };
     taskToUpdate();
@@ -48,11 +50,11 @@ function UpdateTask() {
         updateData,
         { withCredentials: true }
       );
-      toast.success("Task Updated Successfully");
+      toast.success("✅ Task Updated Successfully");
       navigate("/");
     } catch (error) {
-      console.log("An Error Occurred on update", error);
-      toast.error("Failed to update task");
+      console.error("An Error Occurred on update", error);
+      toast.error("❌ Failed to update task");
     }
   };
 
@@ -120,6 +122,29 @@ function UpdateTask() {
                   <option value="medium">Medium</option>
                   <option value="hard">Hard</option>
                 </select>
+              </div>
+
+              {/* ✅ Favourite Checkbox */}
+              <div>
+                <label className="block text-gray-400 mb-1">
+                  Edit Favourite
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="isFavourite"
+                    name="isFavourite"
+                    checked={updateData.isFavourite}
+                    onChange={handleInput}
+                    className="w-4 h-4 accent-yellow-500"
+                  />
+                  <label
+                    htmlFor="isFavourite"
+                    className="text-sm text-gray-300"
+                  >
+                    Mark this task as Favourite ⭐
+                  </label>
+                </div>
               </div>
             </div>
 

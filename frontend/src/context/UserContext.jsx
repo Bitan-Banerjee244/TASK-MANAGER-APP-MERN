@@ -6,6 +6,7 @@ const BACKEND_URL = "http://localhost:5000";
 function UserContextProvider({ children }) {
   let [currentUser, setCurrentUser] = useState({});
   let [deletedTask, setDeleted] = useState(false);
+  let [favTask, setFavTask] = useState(false);
   let [taskData, setTaskData] = useState({
     title: "",
     description: "",
@@ -13,7 +14,7 @@ function UserContextProvider({ children }) {
     progress: "",
     isFavourite: "",
   });
-  
+
   let value = {
     BACKEND_URL,
     currentUser,
@@ -22,6 +23,8 @@ function UserContextProvider({ children }) {
     setTaskData,
     deletedTask,
     setDeleted,
+    favTask,
+    setFavTask,
   };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }

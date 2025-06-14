@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 function Card({ task }) {
-  let { BACKEND_URL, setDeleted } = useContext(UserContext);
+  let { BACKEND_URL, setDeleted , setFavTask} = useContext(UserContext);
   let navigate = useNavigate();
 
   const deletePost = async (id) => {
@@ -23,9 +23,14 @@ function Card({ task }) {
     }
   };
 
+
+
   return (
     <>
-      <div id="card" className="w-full h-[220px] bg-red-100 relative ">
+      <div
+        id="card"
+        className="w-full h-[230px] bg-red-100 relative overflow-hidden"
+      >
         {/* Card content with flat black design */}
         <div className="w-full h-full bg-[#0a0a0a] text-white p-4 flex flex-col justify-between shadow-md border border-[#404040]">
           {/* Title + Tags */}
@@ -48,7 +53,7 @@ function Card({ task }) {
           </div>
 
           {/* Description */}
-          <p className="text-gray-400 text-sm mt-2 border-t border-[#2a2a2a] pt-2">
+          <p className="text-gray-400 text-sm mt-2 border-t border-[#2a2a2a] pt-2 break-words whitespace-pre-wrap leading-relaxed max-h-39 overflow-y-auto scrollbar-thin scrollbar-thumb-[#555] scrollbar-track-[#1a1a1a] hide-scrollbar">
             {task.description}
           </p>
 
@@ -61,8 +66,14 @@ function Card({ task }) {
             >
               <FaEdit />
             </button>
-            <button title="Favorite" className="hover:text-pink-500 transition">
-              <FaHeart />
+            <button
+              title="Favorite"
+              className="hover:text-pink-500 transition"
+              onClick={() => {
+                updateFavorite(task._id,task.isFavourite);
+              }}
+            >
+             <FaHeart className={task.isFavourite? "text-pink-500" : "text-gray-400"} />
             </button>
             <button
               title="Delete"

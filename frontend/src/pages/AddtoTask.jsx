@@ -2,37 +2,38 @@ import { useNavigate } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useState } from "react";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
 function AddtoTask() {
   const navigate = useNavigate();
-  let { BACKEND_URL, currentUser, taskData, setTaskData } =
-    useContext(UserContext);
+  const { BACKEND_URL, currentUser, setTaskData } = useContext(UserContext);
 
   const handleTaskSubmit = async (e) => {
     try {
       e.preventDefault();
       const formData = new FormData(e.target);
+
       const taskData = {
         title: formData.get("title"),
         description: formData.get("description"),
         type: formData.get("type"),
         progress: formData.get("progress"),
-        isFavourite: false,
+        isFavourite: formData.get("isFavourite") === "on", // ✅ Checkbox logic
         userId: currentUser.id,
       };
+
       setTaskData(taskData);
 
-      let res = await axios.post(`${BACKEND_URL}/api/v2/createtask`, taskData, {
+      const res = await axios.post(`${BACKEND_URL}/api/v2/createtask`, taskData, {
         withCredentials: true,
       });
-      console.log(res);
+
       toast.success(res.data.message);
       navigate("/");
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
+      toast.error("Failed to create task");
     }
   };
 
@@ -52,10 +53,7 @@ function AddtoTask() {
             📝 Add New Task
           </h2>
 
-          <form
-            className="grid md:grid-cols-2 gap-6"
-            onSubmit={handleTaskSubmit}
-          >
+          <form className="grid md:grid-cols-2 gap-6" onSubmit={handleTaskSubmit}>
             {/* Left Section */}
             <div className="space-y-5">
               <div>
@@ -97,15 +95,28 @@ function AddtoTask() {
                   <option value="hard">Hard</option>
                 </select>
               </div>
+
+              {/* ✅ Favourite Checkbox */}
+              <div>
+                <label className="block text-gray-400 mb-1">Add to Favourite</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="isFavourite"
+                    name="isFavourite"
+                    className="w-4 h-4 accent-cyan-500"
+                  />
+                  <label htmlFor="isFavourite" className="text-sm text-gray-300">
+                    Mark this task as Favourite
+                  </label>
+                </div>
+              </div>
             </div>
 
             {/* Right Section */}
             <div className="space-y-5">
               <div>
-                <label
-                  htmlFor="description"
-                  className="block text-gray-400 mb-1"
-                >
+                <label htmlFor="description" className="block text-gray-400 mb-1">
                   Description
                 </label>
                 <textarea
