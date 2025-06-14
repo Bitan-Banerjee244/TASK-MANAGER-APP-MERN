@@ -1,8 +1,14 @@
 import Nav from "../components/Nav";
 import Filterbar from "../components/Filterbar";
 import Card from "../components/Card";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../context/UserContext";
 
 function Home() {
+  let { currentUser } = useContext(UserContext);
+  // useEffect(()=>{
+
+  // },[])
   return (
     <>
       <div className="w-[100vw] h-screen bg-black absolute z-2">
@@ -12,7 +18,10 @@ function Home() {
 
           {/* Welcome Message */}
           <div className="text-white text-2xl md:text-3xl font-semibold tracking-wide my-3 ml-2 text-center">
-            Welcome back, <span className="text-cyan-400 font-bold">Bitan</span>{" "}
+            Welcome back,{" "}
+            <span className="text-cyan-400 font-bold">
+              {currentUser?.userName}
+            </span>{" "}
             👋
           </div>
 

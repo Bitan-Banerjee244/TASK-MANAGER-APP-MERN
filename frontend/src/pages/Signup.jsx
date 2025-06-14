@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 function Signup() {
   let { BACKEND_URL } = useContext(UserContext);
-  let navigate = useNavigate()
+  let navigate = useNavigate();
   let [input, setInput] = useState({
     userName: "",
     email: "",
@@ -23,18 +23,23 @@ function Signup() {
 
   // SignIn Handler
   const handleSignUp = async (e) => {
-    e.preventDefault();
-    let res = await axios.post(`${BACKEND_URL}/api/v2/signup`, input, {
-      withCredentials: true,
-    });
-    toast.success("Sign In Successful");
-    setInput({
-      userName: "",
-      email: "",
-      password: "",
-    });
-    navigate("/login")
-    // console.log(res.data.user)
+    try {
+      e.preventDefault();
+      let res = await axios.post(`${BACKEND_URL}/api/v2/signup`, input, {
+        withCredentials: true,
+      });
+      toast.success("Sign In Successful");
+      setInput({
+        userName: "",
+        email: "",
+        password: "",
+      });
+      navigate("/login");
+      // console.log(res);
+    } catch (error) {
+      toast.error(error.response.data.message)
+      // console.log(error.response.data.message);
+    }
   };
 
   return (
