@@ -1,38 +1,58 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
-import { useState } from "react";
-import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { toast } from "react-hot-toast";
 
-function AddtoTask() {
+function UpdateTask() {
   const navigate = useNavigate();
-  let { BACKEND_URL, currentUser, taskData, setTaskData } =
-    useContext(UserContext);
+  let { BACKEND_URL } = useContext(UserContext);
+  let { id } = useParams();
 
-  const handleTaskSubmit = async (e) => {
+  let [updateData, setupdateData] = useState({
+    title: "",
+    description: "",
+    type: "",
+    progress: "",
+  });
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setupdateData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // ✅ Fetch existing task data
+  useEffect(() => {
+    const taskToUpdate = async () => {
+      try {
+        let res = await axios.get(`${BACKEND_URL}/api/v2/fetchtask/${id}`, {
+          withCredentials: true,
+        });
+        setupdateData(res.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    taskToUpdate();
+  }, [BACKEND_URL, id]);
+
+  const updateCompleteTask = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const taskData = {
-        title: formData.get("title"),
-        description: formData.get("description"),
-        type: formData.get("type"),
-        progress: formData.get("progress"),
-        isFavourite: false,
-        userId: currentUser.id,
-      };
-      setTaskData(taskData);
-
-      let res = await axios.post(`${BACKEND_URL}/api/v2/createtask`, taskData, {
-        withCredentials: true,
-      });
-      console.log(res);
-      toast.success(res.data.message);
+      let res = await axios.put(
+        `${BACKEND_URL}/api/v2/updateTask/${id}`,
+        updateData,
+        { withCredentials: true }
+      );
+      toast.success("Task Updated Successfully");
       navigate("/");
     } catch (error) {
-      console.log(error.message);
+      console.log("An Error Occurred on update", error);
+      toast.error("Failed to update task");
     }
   };
 
@@ -49,12 +69,12 @@ function AddtoTask() {
 
         <div className="bg-[#111111] p-8 rounded-2xl w-[90vw] max-w-5xl shadow-xl border border-[#2a2a2a] text-white">
           <h2 className="text-3xl font-bold mb-8 text-center text-white">
-            📝 Add New Task
+            ✏️ Update Task
           </h2>
 
           <form
             className="grid md:grid-cols-2 gap-6"
-            onSubmit={handleTaskSubmit}
+            onSubmit={updateCompleteTask}
           >
             {/* Left Section */}
             <div className="space-y-5">
@@ -66,9 +86,11 @@ function AddtoTask() {
                   type="text"
                   id="title"
                   name="title"
-                  placeholder="Enter task title"
+                  placeholder="Update task title"
                   className="w-full px-4 py-2 bg-[#1c1c1c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   required
+                  onChange={handleInput}
+                  value={updateData.title}
                 />
               </div>
 
@@ -77,7 +99,8 @@ function AddtoTask() {
                 <select
                   name="progress"
                   className="w-full px-4 py-2 bg-[#1c1c1c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                  defaultValue="pending"
+                  onChange={handleInput}
+                  value={updateData.progress}
                 >
                   <option value="pending">Pending</option>
                   <option value="on progress">On Progress</option>
@@ -90,7 +113,8 @@ function AddtoTask() {
                 <select
                   name="type"
                   className="w-full px-4 py-2 bg-[#1c1c1c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                  defaultValue="easy"
+                  onChange={handleInput}
+                  value={updateData.type}
                 >
                   <option value="easy">Easy</option>
                   <option value="medium">Medium</option>
@@ -111,10 +135,12 @@ function AddtoTask() {
                 <textarea
                   id="description"
                   name="description"
-                  placeholder="Enter task description"
+                  placeholder="Update task description"
                   rows="10"
                   className="w-full h-full px-4 py-2 bg-[#1c1c1c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
                   required
+                  onChange={handleInput}
+                  value={updateData.description}
                 ></textarea>
               </div>
             </div>
@@ -123,9 +149,9 @@ function AddtoTask() {
             <div className="md:col-span-2 mt-8 text-center">
               <button
                 type="submit"
-                className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 shadow-md hover:shadow-lg"
+                className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-6 rounded-lg transition duration-300 shadow-md hover:shadow-lg"
               >
-                ➕ Add Task
+                🔄 Update Task
               </button>
             </div>
           </form>
@@ -135,4 +161,4 @@ function AddtoTask() {
   );
 }
 
-export default AddtoTask;
+export default UpdateTask;

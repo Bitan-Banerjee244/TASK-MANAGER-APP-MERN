@@ -24,12 +24,13 @@ const taskSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    isFavourite:{
-      type:Boolean
+    isFavourite: {
+      type: Boolean,
+      default: false
     }
   },
-  { timestamps: true } 
+  { timestamps: true }
 );
 
-const Task = mongoose.model("Task", taskSchema); 
+const Task = mongoose.model("Task", taskSchema);
 export default Task;
