@@ -6,10 +6,10 @@ function Card() {
     <>
       <div
         id="card"
-        className="w-full min-h-[190px] bg-red-100 relative overflow-hidden"
+        className="w-full min-h-[230px] bg-red-100 relative overflow-hidden shadow-sm shadow-blue-100"
       >
         {/* Card content with flat black design */}
-        <div className="w-full h-full bg-[#0a0a0a] text-white p-4 flex flex-col justify-between shadow-md border border-[#2a2a2a]">
+        <div className="w-full h-full bg-[#0a0a0a] text-white p-4 flex flex-col justify-between shadow-md border border-[#404040]">
           {/* Title + Tags */}
           <div>
             {/* Title with 90% underline */}
@@ -23,7 +23,7 @@ function Card() {
               <span className="text-xs border border-yellow-400 bg-[#1f2937] text-yellow-300 px-2 py-0.5 uppercase tracking-wide rounded-sm cursor-pointer">
                 On Progress
               </span>
-              <span className="text-xs border border-red-400 bg-[#1f2937] red-purple-300 px-2 py-0.5 uppercase tracking-wide rounded-sm cursor-pointer">
+              <span className="text-xs border border-red-400 bg-[#3d1e27] red-purple-300 px-2 py-0.5 uppercase tracking-wide rounded-sm cursor-pointer">
                 Hard
               </span>
             </div>

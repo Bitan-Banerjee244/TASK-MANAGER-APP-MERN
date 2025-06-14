@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Signup() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
+    <div className="min-h-screen flex items-center justify-center bg-black p-6">
       {/* Glass Effect Card */}
       <div className="backdrop-blur-md bg-gradient-to-br from-blue-800/20 via-purple-800/20 to-indigo-800/20 border border-white/10 p-8 rounded-2xl shadow-2xl w-full max-w-md">
         <h2 className="text-3xl font-bold text-white mb-6 text-center">

@@ -1,10 +1,14 @@
 import { FaSearch } from "react-icons/fa";
 import { MdAdd } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { IoExit } from "react-icons/io5";
 
 function Nav() {
+  let navigate = useNavigate();
+
   return (
     <>
-      <nav className="fixed top-3 left-1/2 transform -translate-x-1/2 w-[90%] h-[50px] bg-gray-800 flex items-center justify-around">
+      <nav className="fixed top-3 left-1/2 transform -translate-x-1/2 w-[90%] h-[50px] bg-gray-800 flex items-center justify-around px-4">
         {/* Logo */}
         <div id="logo" className="text-white md:text-2xl text-xl font-bold">
           Task<span className="text-cyan-400">Lite</span>
@@ -21,12 +25,18 @@ function Nav() {
           </button>
         </div>
 
-        <div>
-          <button className="md:w-8 md:h-8 w-5 h-5 flex items-center justify-center rounded-full border-2 border-dotted border-cyan-400 text-cyan-400 text-2xl hover:bg-cyan-400 hover:text-black transition">
+        {/* Add Task  and Logout */}
+        <div className="w-[10%] flex gap-2 items-center ">
+          <button
+            className="md:w-8 md:h-8 w-5 h-5 flex items-center justify-center rounded-full border-2 border-dotted border-cyan-400 text-cyan-400 text-2xl hover:bg-cyan-400 hover:text-black transition"
+            onClick={() => navigate("/addtotask")}
+          >
             <MdAdd />
           </button>
+          <button className="md:w-8 md:h-8  w-5 h-5 flex items-center justify-center rounded-full border-2 border-red-400 text-red-400 text-xl hover:bg-red-400 hover:text-black transition duration-300">
+            <IoExit />
+          </button>
         </div>
-        {/* Add Task  */}
       </nav>
     </>
   );

@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'; // If you're using routing
 
 function Login() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
+    <div className="min-h-screen flex items-center justify-center bg-black p-6">
       <div className="bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md">
-        <h2 className="text-3xl font-bold text-white mb-6 text-center">Welcome Back</h2>
+        <h2 className="text-3xl font-bold text-white mb-6 text-center">Log In</h2>
 
         <form className="space-y-5">
           {/* Email */}
