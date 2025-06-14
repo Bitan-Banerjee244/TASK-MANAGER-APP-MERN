@@ -1,7 +1,42 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useContext, useState } from "react";
+import { UserContext } from "../context/UserContext";
+import toast from "react-hot-toast";
 
 function Signup() {
+  let { BACKEND_URL } = useContext(UserContext);
+  let navigate = useNavigate()
+  let [input, setInput] = useState({
+    userName: "",
+    email: "",
+    password: "",
+  });
+
+  // Creating JSON file to send to server
+  const handleInput = (e) => {
+    setInput((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  // SignIn Handler
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    let res = await axios.post(`${BACKEND_URL}/api/v2/signup`, input, {
+      withCredentials: true,
+    });
+    toast.success("Sign In Successful");
+    setInput({
+      userName: "",
+      email: "",
+      password: "",
+    });
+    navigate("/login")
+    // console.log(res.data.user)
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-black p-6">
       {/* Glass Effect Card */}
@@ -10,7 +45,7 @@ function Signup() {
           Sign Up
         </h2>
 
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleSignUp}>
           {/* Full Name */}
           <div>
             <label className="block text-gray-300 mb-2" htmlFor="name">
@@ -19,8 +54,11 @@ function Signup() {
             <input
               type="text"
               id="name"
+              value={input.userName}
+              name="userName"
               placeholder="Enter your full name"
               className="w-full px-4 py-2 rounded-xl bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              onChange={handleInput}
             />
           </div>
 
@@ -32,8 +70,11 @@ function Signup() {
             <input
               type="email"
               id="email"
+              name="email"
+              value={input.email}
               placeholder="Enter your email"
               className="w-full px-4 py-2 rounded-xl bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              onChange={handleInput}
             />
           </div>
 
@@ -45,8 +86,11 @@ function Signup() {
             <input
               type="password"
               id="password"
+              name="password"
+              value={input.password}
               placeholder="Enter your password"
               className="w-full px-4 py-2 rounded-xl bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              onChange={handleInput}
             />
           </div>
 
