@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import { toast } from "react-hot-toast";
+import axios from "axios";
 
 function UpdateTask() {
   const navigate = useNavigate();
@@ -42,6 +42,7 @@ function UpdateTask() {
     taskToUpdate();
   }, [BACKEND_URL, id]);
 
+  // Update the Task
   const updateCompleteTask = async (e) => {
     e.preventDefault();
     try {

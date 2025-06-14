@@ -9,7 +9,14 @@ import axios from "axios";
 import NoTaskBanner from "../components/NoTaskBanner";
 
 function Home() {
-  let { currentUser, BACKEND_URL, taskData ,deletedTask} = useContext(UserContext);
+  let {
+    currentUser,
+    BACKEND_URL,
+    taskData,
+    deletedTask,
+    filterType,
+    setFilterType,
+  } = useContext(UserContext);
   let [task, setTask] = useState([]);
 
   const fetchTask = async () => {
@@ -29,14 +36,30 @@ function Home() {
 
   useEffect(() => {
     fetchTask();
-  }, [taskData,deletedTask]);
+  }, [taskData, deletedTask]);
+
+  // Filtering Task
+  const getFilteredTasks = () => {
+    switch (filterType) {
+      case "favourite":
+        return task.filter((t) => t.isFavourite);
+      case "hard":
+        return task.filter((t) => t.type.toLowerCase() === "hard");
+      case "completed":
+        return task.filter((t) => t.progress.toLowerCase() === "completed");
+      default:
+        return task;
+    }
+  };
+
+  const filteredTasks = getFilteredTasks();
 
   return (
     <>
       <div className="w-[100vw] h-screen bg-black  z-2 ">
         <Nav />
         <div id="container" className="w-[90%]  h-screen mx-auto pt-[70px]">
-          <Filterbar />
+          <Filterbar setFilterType={setFilterType} filtertype={filterType}/>
 
           {/* Welcome Message */}
           <div className="text-white text-2xl md:text-3xl font-semibold tracking-wide my-3 ml-2 text-center">
@@ -50,12 +73,13 @@ function Home() {
           {/* Main Card Portion  */}
           <div
             id="task-list"
-            className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-3 mt-4 w-full overflow-y-scroll h-[calc(85vh-140px)] pr-2 hide-scrollbar"
+            className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-3 mt-4 w-full overflow-y-scroll h-[calc(90vh-140px)] pr-2 hide-scrollbar"
           >
-            {task.length === 0 ? (
+
+            {filteredTasks.length === 0 ? (
               <NoTaskBanner />
             ) : (
-              task.map((item, index) => (
+              filteredTasks.map((item, index) => (
                 <Card key={item._id || index} task={item} />
               ))
             )}

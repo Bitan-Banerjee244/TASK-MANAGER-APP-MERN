@@ -25,9 +25,13 @@ function AddtoTask() {
 
       setTaskData(taskData);
 
-      const res = await axios.post(`${BACKEND_URL}/api/v2/createtask`, taskData, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${BACKEND_URL}/api/v2/createtask`,
+        taskData,
+        {
+          withCredentials: true,
+        }
+      );
 
       toast.success(res.data.message);
       navigate("/");
@@ -36,6 +40,8 @@ function AddtoTask() {
       toast.error("Failed to create task");
     }
   };
+
+  
 
   return (
     <div className="w-screen h-screen bg-[#0a0a0a] flex items-center justify-center fixed top-0 left-0 z-50">
@@ -53,7 +59,10 @@ function AddtoTask() {
             📝 Add New Task
           </h2>
 
-          <form className="grid md:grid-cols-2 gap-6" onSubmit={handleTaskSubmit}>
+          <form
+            className="grid md:grid-cols-2 gap-6"
+            onSubmit={handleTaskSubmit}
+          >
             {/* Left Section */}
             <div className="space-y-5">
               <div>
@@ -98,7 +107,9 @@ function AddtoTask() {
 
               {/* ✅ Favourite Checkbox */}
               <div>
-                <label className="block text-gray-400 mb-1">Add to Favourite</label>
+                <label className="block text-gray-400 mb-1">
+                  Add to Favourite
+                </label>
                 <div className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -106,7 +117,10 @@ function AddtoTask() {
                     name="isFavourite"
                     className="w-4 h-4 accent-cyan-500"
                   />
-                  <label htmlFor="isFavourite" className="text-sm text-gray-300">
+                  <label
+                    htmlFor="isFavourite"
+                    className="text-sm text-gray-300"
+                  >
                     Mark this task as Favourite
                   </label>
                 </div>
@@ -116,7 +130,10 @@ function AddtoTask() {
             {/* Right Section */}
             <div className="space-y-5">
               <div>
-                <label htmlFor="description" className="block text-gray-400 mb-1">
+                <label
+                  htmlFor="description"
+                  className="block text-gray-400 mb-1"
+                >
                   Description
                 </label>
                 <textarea

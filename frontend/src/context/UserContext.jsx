@@ -7,6 +7,7 @@ function UserContextProvider({ children }) {
   let [currentUser, setCurrentUser] = useState({});
   let [deletedTask, setDeleted] = useState(false);
   let [favTask, setFavTask] = useState(false);
+  const [filterType, setFilterType] = useState("all");
   let [taskData, setTaskData] = useState({
     title: "",
     description: "",
@@ -25,6 +26,8 @@ function UserContextProvider({ children }) {
     setDeleted,
     favTask,
     setFavTask,
+    filterType,
+    setFilterType,
   };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }

@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 function Card({ task }) {
-  let { BACKEND_URL, setDeleted , setFavTask} = useContext(UserContext);
+  let { BACKEND_URL, setDeleted } = useContext(UserContext);
   let navigate = useNavigate();
 
   const deletePost = async (id) => {
@@ -23,7 +23,32 @@ function Card({ task }) {
     }
   };
 
+  // Tag color helpers
+  const getTypeColor = (type) => {
+    switch (type.toLowerCase()) {
+      case "easy":
+        return "bg-[#112d11] text-green-400 border border-green-700";
+      case "medium":
+        return "bg-[#2e2a11] text-yellow-400 border border-yellow-600";
+      case "hard":
+        return "bg-[#2d1111] text-red-400 border border-red-600";
+      default:
+        return "bg-[#1f1f1f] text-gray-300 border border-gray-600";
+    }
+  };
 
+  const getProgressColor = (progress) => {
+    switch (progress.toLowerCase()) {
+      case "pending":
+        return "bg-[#1f1f1f] text-gray-400 border border-gray-500";
+      case "on progress":
+        return "bg-[#102a3d] text-blue-400 border border-blue-600";
+      case "completed":
+        return "bg-[#1e1032] text-purple-400 border border-purple-600";
+      default:
+        return "bg-[#1a1a1a] text-gray-300 border border-gray-500";
+    }
+  };
 
   return (
     <>
@@ -33,20 +58,30 @@ function Card({ task }) {
       >
         {/* Card content with flat black design */}
         <div className="w-full h-full bg-[#0a0a0a] text-white p-4 flex flex-col justify-between shadow-md border border-[#404040]">
+          
           {/* Title + Tags */}
           <div>
-            {/* Title with 90% underline */}
             <h2 className="text-lg font-semibold relative pb-1 w-fit">
               {task.title}
               <span className="absolute left-0 bottom-0 w-[90%] h-[2px] bg-cyan-500 block"></span>
             </h2>
 
-            {/* Tags */}
             <div className="flex gap-2 mt-3">
-              <span className="text-xs border border-yellow-400 bg-[#1f2937] text-yellow-300 px-2 py-0.5 uppercase tracking-wide rounded-sm cursor-pointer">
+              {/* Progress Tag */}
+              <span
+                className={`text-xs ${getProgressColor(
+                  task.progress
+                )} px-2 py-0.5 uppercase tracking-wide rounded-sm cursor-pointer`}
+              >
                 {task.progress}
               </span>
-              <span className="text-xs border border-red-400 bg-[#3d1e27] red-purple-300 px-2 py-0.5 uppercase tracking-wide rounded-sm cursor-pointer">
+
+              {/* Type Tag */}
+              <span
+                className={`text-xs ${getTypeColor(
+                  task.type
+                )} px-2 py-0.5 uppercase tracking-wide rounded-sm cursor-pointer`}
+              >
                 {task.type}
               </span>
             </div>
@@ -70,10 +105,12 @@ function Card({ task }) {
               title="Favorite"
               className="hover:text-pink-500 transition"
               onClick={() => {
-                updateFavorite(task._id,task.isFavourite);
+                updateFavorite(task._id, task.isFavourite);
               }}
             >
-             <FaHeart className={task.isFavourite? "text-pink-500" : "text-gray-400"} />
+              <FaHeart
+                className={task.isFavourite ? "text-pink-500" : "text-gray-400"}
+              />
             </button>
             <button
               title="Delete"
