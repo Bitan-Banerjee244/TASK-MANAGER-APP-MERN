@@ -2,15 +2,16 @@ import { FaSearch } from "react-icons/fa";
 import { MdAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { IoExit } from "react-icons/io5";
-import toast from "react-hot-toast";
-import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 function Nav() {
   let navigate = useNavigate();
   let { BACKEND_URL } = useContext(UserContext);
 
+  // Log Out Handler
   const handleLogOut = async () => {
     try {
       let res = await axios.post(`${BACKEND_URL}/api/v2/logout`,{} ,{

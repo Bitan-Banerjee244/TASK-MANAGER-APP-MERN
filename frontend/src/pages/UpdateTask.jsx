@@ -9,7 +9,6 @@ function UpdateTask() {
   const navigate = useNavigate();
   let { BACKEND_URL } = useContext(UserContext);
   let { id } = useParams();
-
   let [updateData, setupdateData] = useState({
     title: "",
     description: "",
@@ -18,6 +17,7 @@ function UpdateTask() {
     isFavourite: false,
   });
 
+  // Creating Object with Updated Task
   const handleInput = (e) => {
     const { name, value, type, checked } = e.target;
     setupdateData((prev) => ({

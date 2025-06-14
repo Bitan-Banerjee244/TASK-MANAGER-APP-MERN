@@ -53,7 +53,7 @@ export const getAllTasks = async (req, res) => {
 export const deleteTask = async (req, res) => {
     try {
         let id = req.params.id;
-        let deletedTask = await Task.findByIdAndDelete({ _id: id })
+        await Task.findByIdAndDelete({ _id: id })
         return res.status(200).json({ message: "Task Deleted Successfully" })
 
     } catch (error) {
@@ -74,39 +74,39 @@ export const fetchTask = async (req, res) => {
 
 
 export const updateTask = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const { title, description, type, progress, isFavourite } = req.body;
+    try {
+        const id = req.params.id;
+        const { title, description, type, progress, isFavourite } = req.body;
 
-    if (!title || !description || !type || !progress) {
-      return res.status(400).json({
-        message: "All fields need to be filled",
-        success: false,
-      });
+        if (!title || !description || !type || !progress) {
+            return res.status(400).json({
+                message: "All fields need to be filled",
+                success: false,
+            });
+        }
+
+        const updatedTask = await Task.findByIdAndUpdate(
+            id,
+            {
+                title,
+                description,
+                type,
+                progress,
+                isFavourite,
+            },
+            { new: true }
+        );
+
+        return res.status(200).json({
+            message: "Task updated successfully!",
+            success: true,
+            data: updatedTask,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            message: "Error occurred during update",
+            success: false,
+            error: error.message,
+        });
     }
-
-    const updatedTask = await Task.findByIdAndUpdate(
-      id,
-      {
-        title,
-        description,
-        type,
-        progress,
-        isFavourite, 
-      },
-      { new: true }
-    );
-
-    return res.status(200).json({
-      message: "Task updated successfully!",
-      success: true,
-      data: updatedTask,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      message: "Error occurred during update",
-      success: false,
-      error: error.message,
-    });
-  }
 };

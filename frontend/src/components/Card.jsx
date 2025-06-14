@@ -23,7 +23,7 @@ function Card({ task }) {
     }
   };
 
-  // Tag color helpers
+  // Tag color helpers (Color : Types of Task)
   const getTypeColor = (type) => {
     switch (type.toLowerCase()) {
       case "easy":
@@ -37,6 +37,7 @@ function Card({ task }) {
     }
   };
 
+  // Tag color helpers (Color : Types of Progress)
   const getProgressColor = (progress) => {
     switch (progress.toLowerCase()) {
       case "pending":
@@ -56,9 +57,8 @@ function Card({ task }) {
         id="card"
         className="w-full h-[230px] bg-red-100 relative overflow-hidden"
       >
-        {/* Card content with flat black design */}
+        {/* Card */}
         <div className="w-full h-full bg-[#0a0a0a] text-white p-4 flex flex-col justify-between shadow-md border border-[#404040]">
-          
           {/* Title + Tags */}
           <div>
             <h2 className="text-lg font-semibold relative pb-1 w-fit">

@@ -1,3 +1,4 @@
+// filtertype, setFilterType  appearing from parent and getback to the parent 
 function Filterbar({ filtertype, setFilterType }) {
   const isActive = (type) =>
     filtertype === type ? "border-b-2 border-cyan-400 font-bold" : "";

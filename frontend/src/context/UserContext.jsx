@@ -4,6 +4,7 @@ export const UserContext = createContext();
 const BACKEND_URL = "http://localhost:5000";
 
 function UserContextProvider({ children }) {
+  // Variables
   let [currentUser, setCurrentUser] = useState({});
   let [deletedTask, setDeleted] = useState(false);
   let [favTask, setFavTask] = useState(false);

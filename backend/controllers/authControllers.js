@@ -62,6 +62,7 @@ export const signup = async (req, res) => {
         email: newUser.email,
       },
     });
+    
   } catch (error) {
     return res.status(500).json({
       success: false,

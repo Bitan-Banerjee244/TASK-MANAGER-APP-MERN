@@ -19,6 +19,7 @@ function Home() {
   } = useContext(UserContext);
   let [task, setTask] = useState([]);
 
+  // Fetching Task
   const fetchTask = async () => {
     try {
       console.log(`${BACKEND_URL}/api/v2/gettask/${currentUser.userId}`);
@@ -34,6 +35,7 @@ function Home() {
     }
   };
 
+  // For getting updated task in each dependency changes
   useEffect(() => {
     fetchTask();
   }, [taskData, deletedTask]);
@@ -75,7 +77,6 @@ function Home() {
             id="task-list"
             className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-3 mt-4 w-full overflow-y-scroll h-[calc(90vh-140px)] pr-2 hide-scrollbar"
           >
-
             {filteredTasks.length === 0 ? (
               <NoTaskBanner />
             ) : (
