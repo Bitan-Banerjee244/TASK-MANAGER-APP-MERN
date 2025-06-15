@@ -1,59 +1,43 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import { toast } from "react-hot-toast";
-import { FaPencil } from "react-icons/fa6";
-import { BiReset } from "react-icons/bi";
+import { MdEditDocument } from "react-icons/md";
+import { FaPlus } from "react-icons/fa";
 import axios from "axios";
+import toast from "react-hot-toast";
 
-function UpdateTask() {
+function AddtoTask() {
   const navigate = useNavigate();
-  const { BACKEND_URL } = useContext(UserContext);
-  const { id } = useParams();
+  const { BACKEND_URL, currentUser, setTaskData } = useContext(UserContext);
 
-  const [updateData, setupdateData] = useState({
-    title: "",
-    description: "",
-    type: "easy",
-    progress: "pending",
-    isFavourite: false,
-  });
-
-  const handleInput = (e) => {
-    const { name, value, type, checked } = e.target;
-    setupdateData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  useEffect(() => {
-    const fetchTask = async () => {
-      try {
-        const res = await axios.get(`${BACKEND_URL}/api/v2/fetchtask/${id}`, {
-          withCredentials: true,
-        });
-        setupdateData(res.data.data);
-      } catch (error) {
-        toast.error("Failed to load task data");
-        console.error(error);
-      }
-    };
-    fetchTask();
-  }, [BACKEND_URL, id]);
-
-  const updateCompleteTask = async (e) => {
-    e.preventDefault();
+  const handleTaskSubmit = async (e) => {
     try {
-      await axios.put(`${BACKEND_URL}/api/v2/updateTask/${id}`, updateData, {
-        withCredentials: true,
-      });
-      toast.success("✅ Task Updated Successfully!");
+      e.preventDefault();
+      const formData = new FormData(e.target);
+
+      const taskData = {
+        title: formData.get("title"),
+        description: formData.get("description"),
+        type: formData.get("type"),
+        progress: formData.get("progress"),
+        isFavourite: formData.get("isFavourite") === "on",
+        userId: currentUser.id,
+      };
+
+      setTaskData(taskData);
+
+      const res = await axios.post(
+        `${BACKEND_URL}/api/v2/createtask`,
+        taskData,
+        { withCredentials: true }
+      );
+
+      toast.success(res.data.message);
       navigate("/");
     } catch (error) {
-      toast.error("❌ Update Failed");
-      console.error(error);
+      console.error(error.message);
+      toast.error("Failed to create task");
     }
   };
 
@@ -68,10 +52,10 @@ function UpdateTask() {
         </button>
 
         <h2 className="text-2xl font-bold text-center mb-6 flex items-center justify-center gap-2">
-          <FaPencil /> Update Task
+          <MdEditDocument /> Add New Task
         </h2>
 
-        <form className="space-y-4" onSubmit={updateCompleteTask}>
+        <form className="space-y-4" onSubmit={handleTaskSubmit}>
           <div>
             <label htmlFor="title" className="text-gray-400 text-sm mb-1 block">
               Task Title
@@ -81,9 +65,7 @@ function UpdateTask() {
               id="title"
               name="title"
               required
-              value={updateData.title}
-              onChange={handleInput}
-              placeholder="Update task title"
+              placeholder="Enter task title"
               className="w-full px-4 py-2 rounded-md bg-[#1c1c1c] text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
           </div>
@@ -97,9 +79,7 @@ function UpdateTask() {
               name="description"
               required
               rows="4"
-              value={updateData.description}
-              onChange={handleInput}
-              placeholder="Update task description"
+              placeholder="Task details..."
               className="w-full px-4 py-2 rounded-md bg-[#1c1c1c] text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
             ></textarea>
           </div>
@@ -111,8 +91,7 @@ function UpdateTask() {
             <select
               id="progress"
               name="progress"
-              value={updateData.progress}
-              onChange={handleInput}
+              defaultValue="pending"
               className="w-full px-4 py-2 rounded-md bg-[#1c1c1c] text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="pending">Pending</option>
@@ -128,8 +107,7 @@ function UpdateTask() {
             <select
               id="type"
               name="type"
-              value={updateData.type}
-              onChange={handleInput}
+              defaultValue="easy"
               className="w-full px-4 py-2 rounded-md bg-[#1c1c1c] text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="easy">Easy</option>
@@ -143,21 +121,19 @@ function UpdateTask() {
               type="checkbox"
               id="isFavourite"
               name="isFavourite"
-              checked={updateData.isFavourite}
-              onChange={handleInput}
-              className="w-4 h-4 accent-yellow-500"
+              className="w-4 h-4 accent-cyan-500"
             />
             <label htmlFor="isFavourite" className="text-sm text-gray-300">
-              Mark as Favourite ⭐
+              Mark as Favourite
             </label>
           </div>
 
           <div className="text-center mt-4 flex justify-center items-center">
             <button
               type="submit"
-              className="flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 px-6 py-2 rounded-md text-black font-semibold text-sm shadow-lg transition"
+              className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 px-6 py-2 rounded-md text-white font-semibold text-sm shadow-lg transition"
             >
-              <BiReset /> Update Task
+              <FaPlus /> Add Task
             </button>
           </div>
         </form>
@@ -166,4 +142,4 @@ function UpdateTask() {
   );
 }
 
-export default UpdateTask;
+export default AddtoTask;
