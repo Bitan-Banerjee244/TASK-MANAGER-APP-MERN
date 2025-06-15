@@ -18,6 +18,7 @@ function Home() {
     setFilterType,
   } = useContext(UserContext);
   let [task, setTask] = useState([]);
+  let [word, setWord] = useState({});
 
   // Fetching Task
   const fetchTask = async () => {
@@ -49,6 +50,10 @@ function Home() {
         return task.filter((t) => t.type.toLowerCase() === "hard");
       case "completed":
         return task.filter((t) => t.progress.toLowerCase() === "completed");
+      case "navfilter":
+        return task.filter((t) =>
+          t.title.toLowerCase().includes(word.searchLetter.toLowerCase())
+        );
       default:
         return task;
     }
@@ -59,9 +64,9 @@ function Home() {
   return (
     <>
       <div className="w-[100vw] h-screen bg-black  z-2 ">
-        <Nav />
+        <Nav setSearchWord={setWord} filterType={setFilterType} />
         <div id="container" className="w-[90%]  h-screen mx-auto pt-[70px]">
-          <Filterbar setFilterType={setFilterType} filtertype={filterType}/>
+          <Filterbar setFilterType={setFilterType} filtertype={filterType} />
 
           {/* Welcome Message */}
           <div className="text-white text-2xl md:text-3xl font-semibold tracking-wide my-3 ml-2 text-center">

@@ -7,16 +7,20 @@ import { UserContext } from "../context/UserContext";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-function Nav() {
+function Nav({ setSearchWord, filterType }) {
   let navigate = useNavigate();
   let { BACKEND_URL } = useContext(UserContext);
 
   // Log Out Handler
   const handleLogOut = async () => {
     try {
-      let res = await axios.post(`${BACKEND_URL}/api/v2/logout`,{} ,{
-        withCredentials: true,
-      });
+      let res = await axios.post(
+        `${BACKEND_URL}/api/v2/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
       console.log(res);
       navigate("/login");
       toast.success(res.data.message);
@@ -39,6 +43,12 @@ function Nav() {
             type="text"
             placeholder="Search tasks..."
             className="flex-grow bg-transparent md:text-md text-sm outline-none text-white placeholder-gray-400 px-3  overflow-hidden w-[92%]"
+            onChange={(e) => {
+              setSearchWord({
+                searchLetter: e.target.value,
+              });
+              filterType("navfilter");
+            }}
           />
           <button className="text-cyan-400 hover:text-white transition w-[7%] md:text-md text-sm mr-3 md:mr-0">
             <FaSearch />
