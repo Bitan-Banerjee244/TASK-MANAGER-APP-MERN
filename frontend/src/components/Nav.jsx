@@ -9,7 +9,7 @@ import axios from "axios";
 
 function Nav({ setSearchWord, filterType }) {
   let navigate = useNavigate();
-  let { BACKEND_URL } = useContext(UserContext);
+  let { BACKEND_URL,setIsAuth } = useContext(UserContext);
 
   // Log Out Handler
   const handleLogOut = async () => {
@@ -23,6 +23,7 @@ function Nav({ setSearchWord, filterType }) {
       );
       // console.log(res);
       navigate("/login");
+      setIsAuth(false)
       toast.success(res.data.message);
     } catch (error) {
       console.log(error);

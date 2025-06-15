@@ -5,7 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 function Login() {
-  let { BACKEND_URL, setCurrentUser } = useContext(UserContext);
+  let { BACKEND_URL, setCurrentUser, setIsAuth } = useContext(UserContext);
   let navigate = useNavigate();
   let [input, setInput] = useState({
     email: "",
@@ -33,6 +33,7 @@ function Login() {
         password: "",
       });
       navigate("/");
+      setIsAuth(true);
       // console.log(res.data);
       // console.log(res.data.user.id);
       // console.log(res.data.user.userName);
@@ -41,7 +42,6 @@ function Login() {
         userId: res.data.user.id,
         userName: res.data.user.userName,
       });
-      
     } catch (error) {
       toast.error(error.response.data.message);
     }
