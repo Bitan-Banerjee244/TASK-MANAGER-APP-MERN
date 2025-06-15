@@ -3,6 +3,8 @@ import { IoMdCloseCircle } from "react-icons/io";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { toast } from "react-hot-toast";
+import { FaPencil } from "react-icons/fa6";
+import { BiReset } from "react-icons/bi";
 import axios from "axios";
 
 function UpdateTask() {
@@ -71,8 +73,8 @@ function UpdateTask() {
         </button>
 
         <div className="bg-[#111111] p-8 rounded-2xl w-[90vw] max-w-5xl shadow-xl border border-[#2a2a2a] text-white">
-          <h2 className="text-3xl font-bold mb-8 text-center text-white">
-            ✏️ Update Task
+          <h2 className="text-3xl font-bold mb-8 text-center text-white flex justify-center items-center gap-4">
+           <FaPencil /> Update Task
           </h2>
 
           <form
@@ -126,7 +128,7 @@ function UpdateTask() {
               </div>
 
               {/* ✅ Favourite Checkbox */}
-              <div>
+              <div className="mt-2 ml-2">
                 <label className="block text-gray-400 mb-1">
                   Edit Favourite
                 </label>
@@ -172,12 +174,12 @@ function UpdateTask() {
             </div>
 
             {/* Submit Button */}
-            <div className="md:col-span-2 mt-8 text-center">
+            <div className="md:col-span-2 mt-8 text-center flex justify-center items-center">
               <button
                 type="submit"
-                className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-6 rounded-lg transition duration-300 shadow-md hover:shadow-lg"
+                className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-6 rounded-lg transition duration-300 shadow-md hover:shadow-lg flex justify-center items-center gap-3"
               >
-                🔄 Update Task
+                <BiReset /> Update Task
               </button>
             </div>
           </form>

@@ -21,7 +21,7 @@ function Nav({ setSearchWord, filterType }) {
           withCredentials: true,
         }
       );
-      console.log(res);
+      // console.log(res);
       navigate("/login");
       toast.success(res.data.message);
     } catch (error) {

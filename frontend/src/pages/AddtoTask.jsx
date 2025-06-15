@@ -1,15 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import { MdEditDocument } from "react-icons/md";
+import { FaPlus } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useState, useContext } from "react";
-import { UserContext } from "../context/UserContext";
 
 function AddtoTask() {
   const navigate = useNavigate();
   const { BACKEND_URL, currentUser, setTaskData } = useContext(UserContext);
 
-  // Adding Tasks menu 
+  // Adding Tasks menu
   const handleTaskSubmit = async (e) => {
     try {
       e.preventDefault();
@@ -20,7 +22,7 @@ function AddtoTask() {
         description: formData.get("description"),
         type: formData.get("type"),
         progress: formData.get("progress"),
-        isFavourite: formData.get("isFavourite") === "on", // ✅ Checkbox logic
+        isFavourite: formData.get("isFavourite") === "on",
         userId: currentUser.id,
       };
 
@@ -42,8 +44,6 @@ function AddtoTask() {
     }
   };
 
-  
-
   return (
     <div className="w-screen h-screen bg-[#0a0a0a] flex items-center justify-center fixed top-0 left-0 z-50">
       <div className="p-1 rounded-2xl bg-gradient-to-br from-[#111] via-[#1a1a1a] to-[#222] shadow-[0_0_20px_rgba(255,255,255,0.05)] relative">
@@ -56,8 +56,8 @@ function AddtoTask() {
         </button>
 
         <div className="bg-[#111111] p-8 rounded-2xl w-[90vw] max-w-5xl shadow-xl border border-[#2a2a2a] text-white">
-          <h2 className="text-3xl font-bold mb-8 text-center text-white">
-            📝 Add New Task
+          <h2 className="text-3xl font-bold mb-8 text-center text-white flex items-center justify-center gap-2">
+            <MdEditDocument /> Add New Task
           </h2>
 
           <form
@@ -107,7 +107,7 @@ function AddtoTask() {
               </div>
 
               {/* ✅ Favourite Checkbox */}
-              <div>
+              <div className="mt-2 ml-2">
                 <label className="block text-gray-400 mb-1">
                   Add to Favourite
                 </label>
@@ -149,12 +149,12 @@ function AddtoTask() {
             </div>
 
             {/* Submit Button */}
-            <div className="md:col-span-2 mt-8 text-center">
+            <div className="md:col-span-2 mt-8 text-center flex justify-center">
               <button
                 type="submit"
-                className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 shadow-md hover:shadow-lg"
+                className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 shadow-md hover:shadow-lg flex justify-center items-center gap-2"
               >
-                ➕ Add Task
+                <FaPlus />Add Task
               </button>
             </div>
           </form>

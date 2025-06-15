@@ -12,11 +12,11 @@ body {
 
 /* Hide scrollbar, but allow scrolling */
 .hide-scrollbar {
-  overflow: auto;           /* enable scroll */
-  scrollbar-width: none;    /* Firefox */
+  overflow: auto; /* enable scroll */
+  scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;            /* Chrome, Safari */
+  display: none; /* Chrome, Safari */
 }

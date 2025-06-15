@@ -1,9 +1,9 @@
-import Nav from "../components/Nav";
-import Filterbar from "../components/Filterbar";
-import Card from "../components/Card";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import { useState } from "react";
+import Nav from "../components/Nav";
+import Filterbar from "../components/Filterbar";
+import Card from "../components/Card";
 import toast from "react-hot-toast";
 import axios from "axios";
 import NoTaskBanner from "../components/NoTaskBanner";
@@ -18,17 +18,16 @@ function Home() {
     setFilterType,
   } = useContext(UserContext);
   let [task, setTask] = useState([]);
-  let [word, setWord] = useState({});
+  let [word, setWord] = useState({ searchLetter: "" });
 
   // Fetching Task
   const fetchTask = async () => {
     try {
-      console.log(`${BACKEND_URL}/api/v2/gettask/${currentUser.userId}`);
       let res = await axios.get(
         `${BACKEND_URL}/api/v2/gettask/${currentUser.userId}`,
         { withCredentials: true }
       );
-      console.log(res.data.data);
+      // console.log(res.data.data);
       setTask(res.data.data);
     } catch (error) {
       console.log(error);
@@ -52,7 +51,9 @@ function Home() {
         return task.filter((t) => t.progress.toLowerCase() === "completed");
       case "navfilter":
         return task.filter((t) =>
-          t.title.toLowerCase().includes(word.searchLetter.toLowerCase())
+          t.title
+            .toLowerCase()
+            .includes(word?.searchLetter.toLowerCase() || " ")
         );
       default:
         return task;
@@ -69,7 +70,7 @@ function Home() {
           <Filterbar setFilterType={setFilterType} filtertype={filterType} />
 
           {/* Welcome Message */}
-          <div className="text-white text-2xl md:text-3xl font-semibold tracking-wide my-3 ml-2 text-center">
+          <div className="text-white md:text-3xl text-[1rem] font-semibold tracking-wide my-3 ml-2 text-center">
             Welcome back,{" "}
             <span className="text-cyan-400 font-bold">
               {currentUser?.userName}
@@ -78,17 +79,21 @@ function Home() {
           </div>
 
           {/* Main Card Portion  */}
-          <div
-            id="task-list"
-            className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-3 mt-4 w-full overflow-y-scroll h-[calc(90vh-140px)] pr-2 hide-scrollbar"
-          >
-            {filteredTasks.length === 0 ? (
-              <NoTaskBanner />
-            ) : (
-              filteredTasks.map((item, index) => (
-                <Card key={item._id || index} task={item} />
-              ))
-            )}
+          <div className="w-full h-[calc(90vh-140px)] overflow-y-scroll pr-2 hide-scrollbar">
+            <div
+              id="task-list"
+              className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-x-3 gap-y-4"
+            >
+              {filteredTasks.length === 0 ? (
+                <NoTaskBanner />
+              ) : (
+                filteredTasks.map((item, index) => (
+                  <div key={item._id || index} className="h-full">
+                    <Card task={item} />
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>
