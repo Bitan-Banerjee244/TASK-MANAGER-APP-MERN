@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 
 export const UserContext = createContext();
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = "https://task-manager-app-mern-2et4.onrender.com";
 
 function UserContextProvider({ children }) {
   // Variables
